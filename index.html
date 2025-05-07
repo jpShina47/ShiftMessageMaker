@@ -1,110 +1,101 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>シフト送信補助アプリ</title>
-  <link rel="stylesheet" href="./pcstyle.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>シフト作成アプリ</title>
+  <link rel="stylesheet" href="./pcsty;e.css">
 </head>
 <body>
-  <h2>シフト送信補助アプリ</h2>
 
-  <label>従業員リスト（1行に1名）</label>
-  <textarea id="employee-list" rows="6" placeholder="例：&#10;山田 太郎&#10;佐藤 花子"></textarea>
-  <button onclick="registerEmployees()">登録</button>
+  <h1>シフト作成アプリ</h1>
 
-  <div id="entries-container">
-    <!-- シフト選択エリアがここに追加される -->
-  </div>
+  <label for="employee-list">従業員リスト（改行区切りで貼り付け）：</label>
+  <textarea id="employee-list" rows="5" placeholder="例：&#10;田中&#10;鈴木&#10;佐藤"></textarea>
+  <button onclick="registerEmployees()">従業員を登録</button>
+
+  <h2>シフト入力</h2>
+  <div id="entries-container"></div>
   <button onclick="addEntry()">＋ 追加</button>
-  <br>
+
   <button onclick="generateMessage()">メッセージを作成</button>
 
-  <h3>出力メッセージ</h3>
+  <h2>出力</h2>
   <textarea id="output" readonly></textarea>
 
   <script>
+    let employeeOptions = [];
     const timeSlots = [
-      "14:20", "15:40",
-      "15:50", "17:10",
-      "17:20", "18:40",
-      "18:50", "20:10",
-      "20:20", "21:40"
+      "14:20", "15:40", "15:50", "17:10",
+      "17:20", "18:40", "18:50", "20:10", "20:20", "21:40"
     ];
 
-    let employeeOptions = [];
-
     function registerEmployees() {
-      const rawText = document.getElementById("employee-list").value;
-      const lines = rawText.split("\n").map(line => line.trim()).filter(line => line);
-      employeeOptions = lines;
-      alert("従業員リストを登録しました。必要に応じてエントリを追加してください。");
-      updateAllEmployeeSelects();
-    }
-
-    function updateAllEmployeeSelects() {
-      const selects = document.querySelectorAll(".employee-select");
-      selects.forEach(select => {
-        const currentValue = select.value;
-        select.innerHTML = "";
-        employeeOptions.forEach(name => {
-          const option = document.createElement("option");
-          option.value = name;
-          option.textContent = name;
-          select.appendChild(option);
-        });
-        if (employeeOptions.includes(currentValue)) {
-          select.value = currentValue;
-        }
-      });
+      const list = document.getElementById("employee-list").value.trim();
+      employeeOptions = list.split(/\r?\n/).filter(name => name !== "");
+      alert("従業員を登録しました。");
     }
 
     function addEntry() {
-  const container = document.getElementById("entries-container");
-  const entryDiv = document.createElement("div");
-  entryDiv.className = "shift-entry";
+      const container = document.getElementById("entries-container");
+      const entryDiv = document.createElement("div");
+      entryDiv.className = "shift-entry";
 
-  const employeeSelect = document.createElement("select");
-  employeeSelect.className = "employee-select";
-  employeeOptions.forEach(name => {
-    const option = document.createElement("option");
-    option.value = name;
-    option.textContent = name;
-    employeeSelect.appendChild(option);
-  });
+      const employeeSelect = document.createElement("select");
+      employeeSelect.className = "employee-select";
+      employeeOptions.forEach(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        employeeSelect.appendChild(option);
+      });
 
-  const startSelect = document.createElement("select");
-  startSelect.className = "start-time-select";
-  timeSlots.forEach(time => {
-    const option = document.createElement("option");
-    option.value = time;
-    option.textContent = time;
-    startSelect.appendChild(option);
-  });
+      const startSelect = document.createElement("select");
+      startSelect.className = "start-time-select";
+      timeSlots.forEach(time => {
+        const option = document.createElement("option");
+        option.value = time;
+        option.textContent = time;
+        startSelect.appendChild(option);
+      });
 
-  const endSelect = document.createElement("select");
-  endSelect.className = "end-time-select";
-  timeSlots.forEach(time => {
-    const option = document.createElement("option");
-    option.value = time;
-    option.textContent = time;
-    endSelect.appendChild(option);
-  });
+      const endSelect = document.createElement("select");
+      endSelect.className = "end-time-select";
+      timeSlots.forEach(time => {
+        const option = document.createElement("option");
+        option.value = time;
+        option.textContent = time;
+        endSelect.appendChild(option);
+      });
 
-  // 🆕 削除ボタン
-  const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "削除";
-  deleteBtn.className = "delete-btn";
-  deleteBtn.onclick = () => {
-    container.removeChild(entryDiv);
-  };
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "削除";
+      deleteBtn.className = "delete-btn";
+      deleteBtn.onclick = () => {
+        container.removeChild(entryDiv);
+      };
 
-  entryDiv.appendChild(employeeSelect);
-  entryDiv.appendChild(startSelect);
-  entryDiv.appendChild(endSelect);
-  entryDiv.appendChild(deleteBtn);
+      entryDiv.appendChild(employeeSelect);
+      entryDiv.appendChild(startSelect);
+      entryDiv.appendChild(endSelect);
+      entryDiv.appendChild(deleteBtn);
 
-  container.appendChild(entryDiv);
-}
+      container.appendChild(entryDiv);
+    }
+
+    function generateMessage() {
+      const entries = document.querySelectorAll(".shift-entry");
+      let message = "";
+      entries.forEach(entry => {
+        const name = entry.querySelector(".employee-select")?.value || "";
+        const start = entry.querySelector(".start-time-select")?.value || "";
+        const end = entry.querySelector(".end-time-select")?.value || "";
+        if (name && start && end) {
+          message += `${name}　${start}~${end}\n`;
+        }
+      });
+      document.getElementById("output").value = message.trim();
+    }
   </script>
 </body>
 </html>
