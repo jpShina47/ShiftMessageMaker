@@ -59,56 +59,52 @@
     }
 
     function addEntry() {
-      const container = document.getElementById("entries-container");
-      const entryDiv = document.createElement("div");
-      entryDiv.className = "shift-entry";
+  const container = document.getElementById("entries-container");
+  const entryDiv = document.createElement("div");
+  entryDiv.className = "shift-entry";
 
-      const employeeSelect = document.createElement("select");
-      employeeSelect.className = "employee-select";
-      employeeOptions.forEach(name => {
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-        employeeSelect.appendChild(option);
-      });
+  const employeeSelect = document.createElement("select");
+  employeeSelect.className = "employee-select";
+  employeeOptions.forEach(name => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    employeeSelect.appendChild(option);
+  });
 
-      const startSelect = document.createElement("select");
-      startSelect.className = "start-time-select";
-      timeSlots.forEach(time => {
-        const option = document.createElement("option");
-        option.value = time;
-        option.textContent = time;
-        startSelect.appendChild(option);
-      });
+  const startSelect = document.createElement("select");
+  startSelect.className = "start-time-select";
+  timeSlots.forEach(time => {
+    const option = document.createElement("option");
+    option.value = time;
+    option.textContent = time;
+    startSelect.appendChild(option);
+  });
 
-      const endSelect = document.createElement("select");
-      endSelect.className = "end-time-select";
-      timeSlots.forEach(time => {
-        const option = document.createElement("option");
-        option.value = time;
-        option.textContent = time;
-        endSelect.appendChild(option);
-      });
+  const endSelect = document.createElement("select");
+  endSelect.className = "end-time-select";
+  timeSlots.forEach(time => {
+    const option = document.createElement("option");
+    option.value = time;
+    option.textContent = time;
+    endSelect.appendChild(option);
+  });
 
-      entryDiv.appendChild(employeeSelect);
-      entryDiv.appendChild(startSelect);
-      entryDiv.appendChild(endSelect);
-      container.appendChild(entryDiv);
-    }
+  // 🆕 削除ボタン
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "削除";
+  deleteBtn.className = "delete-btn";
+  deleteBtn.onclick = () => {
+    container.removeChild(entryDiv);
+  };
 
-    function generateMessage() {
-      const entries = document.querySelectorAll(".shift-entry");
-      const lines = [];
+  entryDiv.appendChild(employeeSelect);
+  entryDiv.appendChild(startSelect);
+  entryDiv.appendChild(endSelect);
+  entryDiv.appendChild(deleteBtn);
 
-      entries.forEach(entry => {
-        const employee = entry.querySelector(".employee-select").value;
-        const start = entry.querySelector(".start-time-select").value;
-        const end = entry.querySelector(".end-time-select").value;
-        lines.push(`${employee}　${start}~${end}`);
-      });
-
-      document.getElementById("output").value = lines.join("\n");
-    }
+  container.appendChild(entryDiv);
+}
   </script>
 </body>
 </html>
