@@ -27,10 +27,8 @@
   
   <script>
     let employeeOptions = [];
-    const timeSlots = [
-      "14:20", "15:40", "15:50", "17:10",
-      "17:20", "18:40", "18:50", "20:10", "20:20", "21:40"
-    ];
+    const startTimes = ["14:20", "15:50", "17:20", "18:50", "20:20"];
+    const endTimes   = ["15:40", "17:10", "18:40", "20:10", "21:40"];
 
     function registerEmployees() {
       const list = document.getElementById("employee-list").value.trim();
@@ -63,12 +61,20 @@
 
       const endSelect = document.createElement("select");
       endSelect.className = "end-time-select";
-      timeSlots.forEach(time => {
+      startTimes.forEach(time => {
+      const option = document.createElement("option");
+      option.value = time;
+      option.textContent = time;
+      startSelect.appendChild(option);
+      });
+
+      endTimes.forEach(time => {
         const option = document.createElement("option");
         option.value = time;
         option.textContent = time;
         endSelect.appendChild(option);
       });
+
 
       const deleteBtn = document.createElement("button");
       deleteBtn.textContent = "削除";
