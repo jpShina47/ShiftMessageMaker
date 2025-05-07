@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>シフト作成アプリ</title>
+  <title>シフトメッセージ作成アプリ</title>
   <link rel="stylesheet" href="./pcstyle.css">
 </head>
 <body>
 
-  <h1>シフト作成アプリ</h1>
+  <h1>シフトメッセージ作成アプリ</h1>
 
-  <label for="employee-list">従業員リスト（改行区切りで貼り付け）：</label>
+  <label for="employee-list">講師リスト（改行区切りで貼り付け）：</label>
   <textarea id="employee-list" rows="5" placeholder="例：&#10;田中&#10;鈴木&#10;佐藤"></textarea>
+  <p>*「登録」ボタンを押さないとプルダウンリストに講師名が出てきません</p>
   <button onclick="registerEmployees()">従業員を登録</button>
 
   <h2>シフト入力</h2>
@@ -22,7 +23,8 @@
 
   <h2>出力</h2>
   <textarea id="output" readonly></textarea>
-
+  <p>©Kazuki WAKAO</p>
+  
   <script>
     let employeeOptions = [];
     const timeSlots = [
