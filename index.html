@@ -10,10 +10,10 @@
 
   <h1>シフトメッセージ作成アプリ</h1>
 
-  <label for="employee-list">講師リスト（改行区切りで貼り付け）：</label>
+  <label for="employee-list">講師名リスト（改行区切りで貼り付け）：</label>
   <textarea id="employee-list" rows="5" placeholder="例：&#10;田中&#10;鈴木&#10;佐藤"></textarea>
   <p>*「登録」ボタンを押さないとプルダウンリストに講師名が出てきません</p>
-  <button onclick="registerEmployees()">講師名リストを登録</button>
+  <button onclick="registerEmployees()">講師名を登録</button>
 
   <h2>シフト入力</h2>
   <div id="entries-container"></div>
@@ -42,7 +42,6 @@
       entryDiv.className = "shift-entry";
 
       const employeeSelect = document.createElement("select");
-      employeeSelect.className = "employee-select";
       employeeOptions.forEach(name => {
         const option = document.createElement("option");
         option.value = name;
@@ -51,8 +50,7 @@
       });
 
       const startSelect = document.createElement("select");
-      startSelect.className = "start-time-select";
-      timeSlots.forEach(time => {
+      startTimes.forEach(time => {
         const option = document.createElement("option");
         option.value = time;
         option.textContent = time;
@@ -60,21 +58,12 @@
       });
 
       const endSelect = document.createElement("select");
-      endSelect.className = "end-time-select";
-      startTimes.forEach(time => {
-      const option = document.createElement("option");
-      option.value = time;
-      option.textContent = time;
-      startSelect.appendChild(option);
-      });
-
       endTimes.forEach(time => {
         const option = document.createElement("option");
         option.value = time;
         option.textContent = time;
         endSelect.appendChild(option);
       });
-
 
       const deleteBtn = document.createElement("button");
       deleteBtn.textContent = "削除";
