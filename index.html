@@ -36,50 +36,52 @@
       alert("従業員を登録しました。");
     }
 
-    function addEntry() {
-      const container = document.getElementById("entries-container");
-      const entryDiv = document.createElement("div");
-      entryDiv.className = "shift-entry";
+function addEntry() {
+  const container = document.getElementById("entries-container");
+  const entryDiv = document.createElement("div");
+  entryDiv.className = "shift-entry";
 
-      const employeeSelect = document.createElement("select");
-      employeeOptions.forEach(name => {
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-        employeeSelect.appendChild(option);
-      });
+  const employeeSelect = document.createElement("select");
+  employeeSelect.className = "employee-select"; // ← ここが重要
+  employeeOptions.forEach(name => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    employeeSelect.appendChild(option);
+  });
 
-      const startSelect = document.createElement("select");
-      startTimes.forEach(time => {
-        const option = document.createElement("option");
-        option.value = time;
-        option.textContent = time;
-        startSelect.appendChild(option);
-      });
+  const startSelect = document.createElement("select");
+  startSelect.className = "start-time-select"; // ← ここが重要
+  startTimes.forEach(time => {
+    const option = document.createElement("option");
+    option.value = time;
+    option.textContent = time;
+    startSelect.appendChild(option);
+  });
 
-      const endSelect = document.createElement("select");
-      endTimes.forEach(time => {
-        const option = document.createElement("option");
-        option.value = time;
-        option.textContent = time;
-        endSelect.appendChild(option);
-      });
+  const endSelect = document.createElement("select");
+  endSelect.className = "end-time-select"; // ← ここが重要
+  endTimes.forEach(time => {
+    const option = document.createElement("option");
+    option.value = time;
+    option.textContent = time;
+    endSelect.appendChild(option);
+  });
 
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "削除";
-      deleteBtn.className = "delete-btn";
-      deleteBtn.onclick = () => {
-        container.removeChild(entryDiv);
-      };
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "削除";
+  deleteBtn.className = "delete-btn";
+  deleteBtn.onclick = () => {
+    container.removeChild(entryDiv);
+  };
 
-      entryDiv.appendChild(employeeSelect);
-      entryDiv.appendChild(startSelect);
-      entryDiv.appendChild(endSelect);
-      entryDiv.appendChild(deleteBtn);
+  entryDiv.appendChild(employeeSelect);
+  entryDiv.appendChild(startSelect);
+  entryDiv.appendChild(endSelect);
+  entryDiv.appendChild(deleteBtn);
 
-      container.appendChild(entryDiv);
-    }
-
+  container.appendChild(entryDiv);
+}
     function generateMessage() {
       const entries = document.querySelectorAll(".shift-entry");
       let message = "";
