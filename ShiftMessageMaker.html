@@ -1,10 +1,128 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShiftMessageMaker</title>
-    <link rel="stylesheet" href="./css/common.css">
+  <meta charset="UTF-8">
+  <title>シフト送信補助アプリ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f8f8f8;
+    }
+    textarea, select, button {
+      margin: 10px 0;
+      width: 100%;
+      padding: 8px;
+      font-size: 1rem;
+    }
+    .shift-entry {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .shift-entry select {
+      flex: 1;
+    }
+    #entries-container {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    #output {
+      height: 150px;
+    }
+  </style>
 </head>
 <body>
+  <h2>シフト送信補助アプリ</h2>
+
+  <label>従業員リスト（1行に1名）</label>
+  <textarea id="employee-list" rows="6" placeholder="例：&#10;山田 太郎&#10;佐藤 花子"></textarea>
+  <button onclick="registerEmployees()">登録</button>
+
+  <div id="entries-container">
+    <!-- シフト選択エリアがここに追加される -->
+  </div>
+  <button onclick="addEntry()">＋ 追加</button>
+  <br>
+  <button onclick="generateMessage()">メッセージを作成</button>
+
+  <h3>出力メッセージ</h3>
+  <textarea id="output" readonly></textarea>
+
+  <script>
+    const shiftTimes = [
+      "14:20~15:40",
+      "15:50~17:10",
+      "17:20~18:40",
+      "18:50~20:10",
+      "20:20~21:40"
+    ];
+    let employeeOptions = [];
+
+    function registerEmployees() {
+      const rawText = document.getElementById("employee-list").value;
+      const lines = rawText.split("\n").map(line => line.trim()).filter(line => line);
+      employeeOptions = lines;
+      alert("従業員リストを登録しました。必要に応じてエントリを追加してください。");
+      updateAllEmployeeSelects();
+    }
+
+    function updateAllEmployeeSelects() {
+      const selects = document.querySelectorAll(".employee-select");
+      selects.forEach(select => {
+        const currentValue = select.value;
+        select.innerHTML = "";
+        employeeOptions.forEach(name => {
+          const option = document.createElement("option");
+          option.value = name;
+          option.textContent = name;
+          select.appendChild(option);
+        });
+        if (employeeOptions.includes(currentValue)) {
+          select.value = currentValue;
+        }
+      });
+    }
+
+    function addEntry() {
+      const container = document.getElementById("entries-container");
+      const entryDiv = document.createElement("div");
+      entryDiv.className = "shift-entry";
+
+      const employeeSelect = document.createElement("select");
+      employeeSelect.className = "employee-select";
+      employeeOptions.forEach(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        employeeSelect.appendChild(option);
+      });
+
+      const shiftSelect = document.createElement("select");
+      shiftTimes.forEach(time => {
+        const option = document.createElement("option");
+        option.value = time;
+        option.textContent = time;
+        shiftSelect.appendChild(option);
+      });
+
+      entryDiv.appendChild(employeeSelect);
+      entryDiv.appendChild(shiftSelect);
+      container.appendChild(entryDiv);
+    }
+
+    function generateMessage() {
+      const entries = document.querySelectorAll(".shift-entry");
+      const lines = [];
+
+      entries.forEach(entry => {
+        const employee = entry.querySelector(".employee-select").value;
+        const shift = entry.querySelector("select:nth-child(2)").value;
+        lines.push(`${employee}　${shift}`);
+      });
+
+      document.getElementById("output").value = lines.join("\n");
+    }
+  </script>
 </body>
+</html>
