@@ -90,7 +90,7 @@ function addEntry() {
         const start = entry.querySelector(".start-time-select")?.value || "";
         const end = entry.querySelector(".end-time-select")?.value || "";
         if (name && start && end) {
-          message += `${name}　${start}~${end}\n`;
+          message += `${name}　${start}～${end}\n`;
         }
       });
       document.getElementById("output").value = message.trim();
