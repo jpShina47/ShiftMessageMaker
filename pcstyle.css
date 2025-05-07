@@ -31,9 +31,12 @@
       font-weight: bold;
       border: none;
       border-radius: 4px;
-      padding: 10px;
+      padding: 6px 10px;  /* 小さめに調整 */
+      font-size: 0.9rem;  /* フォントも小さめ */
       cursor: pointer;
-    }
+      flex-shrink: 0;     /* はみ出し防止 */
+}
+
 
     #output {
       height: 150px;
