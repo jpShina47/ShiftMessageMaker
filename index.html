@@ -21,12 +21,23 @@
 
   <label for="employee-list">講師名リスト（改行区切りで貼り付け）：</label>
   <textarea id="employee-list" rows="5" placeholder="例：&#10;田中&#10;鈴木&#10;佐藤"></textarea>
-  <p>*「登録」ボタンを押さないとプルダウンリストに講師名が出てきません</p>
   <button onclick="registerEmployees()">講師名を登録</button>
+  <p>*「登録」ボタンを押さないとプルダウンリストに講師名が出てきません</p>
+  <p>講師名リストは保存されないので，テキストファイルなど別で保存しておくことをお勧めいたします</p>
 
   <h2>シフト入力</h2>
   <div id="entries-container"></div>
   <button onclick="addEntry()">＋ 追加</button>
+
+  <label for="honorific-select">敬称：</label>
+  <select id="honorific-select">
+    <option value=""></option>
+    <option value="先生">先生</option>
+    <option value="さん">さん</option>
+  </select>
+  <label>
+    <input type="checkbox" id="honorific-on" class="honorific-checkbox">敬称略をメッセージ先頭に追加
+  </label>
 
   <button onclick="generateMessage()">メッセージを作成</button>
 
@@ -91,19 +102,33 @@ function addEntry() {
 
   container.appendChild(entryDiv);
 }
-    function generateMessage() {
-      const entries = document.querySelectorAll(".shift-entry");
-      let message = "";
-      entries.forEach(entry => {
-        const name = entry.querySelector(".employee-select")?.value || "";
-        const start = entry.querySelector(".start-time-select")?.value || "";
-        const end = entry.querySelector(".end-time-select")?.value || "";
-        if (name && start && end) {
-          message += `${name}　${start}～${end}\n`;
-        }
-      });
-      document.getElementById("output").value = message.trim();
+  function generateMessage() {
+    const honorificCheckbox = document.getElementById("honorific-on");
+    const honorificSelect = document.getElementById("honorific-select");
+    const entries = document.querySelectorAll(".shift-entry");
+  
+    const isHonorificOmitted = honorificCheckbox?.checked;
+    const selectedHonorific = honorificSelect?.value || "";
+
+    let message = "";
+
+    if (isHonorificOmitted) {
+      message += "（敬称略）\n";
     }
+
+    entries.forEach(entry => {
+      const name = entry.querySelector(".employee-select")?.value || "";
+      const start = entry.querySelector(".start-time-select")?.value || "";
+      const end = entry.querySelector(".end-time-select")?.value || "";
+  
+      if (name && start && end) {
+        const finalName = isHonorificOmitted ? name : name + selectedHonorific;
+        message += `${finalName}　${start}～${end}\n`;
+      }
+    });
+    
+    document.getElementById("output").value = message.trim();
+  }
   </script>
 </body>
 </html>
